@@ -142,20 +142,13 @@ def handle_admin_input(message):
             bot.send_message(chat_id,f'✅ Service {admin_stage["service_name"]} wiht {len(admin_stage["dates"])}')
             user_state.pop(admin_id)
 """  """
-@app.route(f"/{BOT_TOKEN}", methods=["POST"])
+@app.route("/webhook", methods=["POST"])
 def webhook():
-    json_data = request.get_json()  # <-- this is the correct way
-    print(f"📦 Raw update: {json_data}")
+    json_data = request.get_json(force=True)
+    print("📦 Raw update:", json_data)
 
-    update = types.Update.de_json(json_data)  # <-- pass dict, not string
-    print(f"✅ Parsed update: {update}")
+    update = types.Update.de_json(json_data)
+    print("✅ Parsed update:", update)
 
     bot.process_new_updates([update])
     return "OK", 200
-
-@app.route("/")
-def index():
-    return "Bot is running!", 200
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
