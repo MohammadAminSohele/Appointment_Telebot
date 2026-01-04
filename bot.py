@@ -139,7 +139,7 @@ def handle_admin_input(message):
             service_id = query.insert_service(admin_stage['service_name'],admin_id)
             for date,time in admin_stage['slots']:
                 query.insert_slots(service_id,date,time)
-            bot.send_message(chat_id,f'✅ Service {admin_stage["service_name"]} wiht {len(admin_stage['dates'])}')
+            bot.send_message(chat_id,f'✅ Service {admin_stage["service_name"]} wiht {len(admin_stage["dates"])}')
             user_state.pop(admin_id)
 """  """
 @app.route(f"/{BOT_TOKEN}", methods=["POST"])
