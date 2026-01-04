@@ -8,7 +8,7 @@ db_url = os.getenv('DATABASE_URL')
 
 def create_tables():
     conn = psycopg2.connect(db_url)
-    cur = conn.cursor()
+    cursor = conn.cursor()
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS users (
