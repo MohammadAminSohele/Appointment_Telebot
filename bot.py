@@ -144,13 +144,14 @@ def handle_admin_input(message):
 """  """
 @app.route(f"/{BOT_TOKEN}", methods=["POST"])
 def webhook():
-    raw = request.get_data().decode("utf-8")
-    print(f"📦 Raw update: {raw}")  # Log the full payload
-    update = types.Update.de_json(raw)
-    print(f"✅ Parsed update: {update}")  # Log the parsed object
+    json_data = request.get_json()  # <-- this is the correct way
+    print(f"📦 Raw update: {json_data}")
+
+    update = types.Update.de_json(json_data)  # <-- pass dict, not string
+    print(f"✅ Parsed update: {update}")
+
     bot.process_new_updates([update])
     return "OK", 200
-
 
 @app.route("/")
 def index():
