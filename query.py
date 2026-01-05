@@ -1,13 +1,13 @@
 import psycopg2
 from schema import db_url
 
-def connect_to_db():
+def connect():
     conn = psycopg2.connect(db_url)
     cursor = conn.cursor()
     return conn, cursor
 
 def insert_user(user_id, username):
-    conn ,cursor = connect_to_db()
+    conn ,cursor = connect()
 
     cursor.execute("INSERT INTO users (user_id, username) VALUES (%s, %s) ON CONFLICT (user_id) DO NOTHING", (user_id, username))
 
@@ -15,7 +15,7 @@ def insert_user(user_id, username):
     conn.close()
 
 def get_services():
-    conn, cursor = connect_to_db()
+    conn, cursor = connect()
 
     cursor.execute("SELECT service_id, name FROM services")
     services = cursor.fetchall()
