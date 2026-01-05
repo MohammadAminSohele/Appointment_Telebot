@@ -19,7 +19,6 @@ app = flask.Flask(__name__)
 """  """
 user_state = {} 
 admins = ['6618292400']
-""" Start """
 @bot.message_handler(['start'])
 def start_cdm(message):
     chat_id = message.chat.id
@@ -34,7 +33,6 @@ def start_cdm(message):
         MarkUp.row('➕Add service')
 
     bot.send_message(chat_id,f'Welcome to our bot {user_name} \n please choose an option',reply_markup=MarkUp)
-
 """ Service """
 @bot.message_handler(func=lambda message : message.text=='Available Servises')
 def choose_service(message):
@@ -55,7 +53,7 @@ def choose_date(call):
     bot.send_message(call.message.chat.id,'choose your date',reply_markup=markup)
 """ Time """
 @bot.callback_query_handler(func=lambda call:call.data.startswith('date_'))
-def choose_time(call):
+def choose_date(call):
     date = call.data.split('_')[1]
     user_state[call.from_user.id]['date'] = date
     service_id = user_state[call.from_user.id]['service_id']
@@ -130,7 +128,7 @@ def handle_admin_input(message):
             bot.send_message(chat_id,'✅ date booked successfuly,add another date or type done')
     elif step=='add_time':
         times = [time.strip() for time in message.text.split('_') if time.strip()]
-        dates = admin_stage['dates'][admin_stage['date_index']]
+        dates = admin_stage["dates"][admin_stage["date_index"]]
         admin_stage['slots'].append((dates,times))
         admin_stage['date_index']+=1
         if admin_stage['date_index'] < len(admin_stage['dates']):
