@@ -79,7 +79,7 @@ def get_user_appointments(user_id):
     return result
 
 def get_admin_appointments(admin_id):
-    conn,cursor = connect_to_db()
+    conn,cursor = connect()
 
     cursor.execute(
         """ 
@@ -97,7 +97,7 @@ def get_admin_appointments(admin_id):
     return result
 
 def insert_slots(service_id,date,times):
-    conn,cursor = connect_to_db()
+    conn,cursor = connect()
 
     for time in times:
         cursor.execute("INSERT INTO slots (service_id,date,time,status) VALUES (%s,%s,%s,'available')",(service_id,date,time))
