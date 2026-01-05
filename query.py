@@ -7,15 +7,15 @@ def connect_to_db():
     return conn, cursor
 
 def insert_user(user_id, username):
-    conn ,cursor = connect()
+    conn ,cursor = connect_to_db()
 
-    cursor.execute("INSERT OR IGNORE INTO users (user_id, username) VALUES (%s, %s)", (user_id, username))
+    cursor.execute("INSERT INTO users (user_id, username) VALUES (%s, %s) ON CONFLICT (user_id) DO NOTHING", (user_id, username))
 
     conn.commit()
     conn.close()
 
 def get_services():
-    conn, cursor = connect()
+    conn, cursor = connect_to_db()
 
     cursor.execute("SELECT service_id, name FROM services")
     services = cursor.fetchall()
@@ -79,7 +79,7 @@ def get_user_appointments(user_id):
     return result
 
 def get_admin_appointments(admin_id):
-    conn,cursor = connect()
+    conn,cursor = connect_to_db()
 
     cursor.execute(
         """ 
@@ -97,7 +97,7 @@ def get_admin_appointments(admin_id):
     return result
 
 def insert_slots(service_id,date,times):
-    conn,cursor = connect()
+    conn,cursor = connect_to_db()
 
     for time in times:
         cursor.execute("INSERT INTO slots (service_id,date,time,status) VALUES (%s,%s,%s,'available')",(service_id,date,time))
